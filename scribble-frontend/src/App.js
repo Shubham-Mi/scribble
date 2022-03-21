@@ -10,7 +10,6 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("App.js -> useEffect");
     const newSocket = io("http://localhost:5000");
     dispatch(connectSocket(newSocket));
     return () => newSocket.close();

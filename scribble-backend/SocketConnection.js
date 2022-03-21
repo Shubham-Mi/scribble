@@ -18,8 +18,11 @@ class Connection {
 
     socket.on("create-room", (func) => this.createRoom(func));
     socket.on("join-room", (room, func) => this.joinRoom(room, func));
-    socket.on("message", (value, room) => this.handleMessage(value, room));
     socket.on("disconnect", () => this.disconnect());
+    socket.on("message", (value, room) => this.handleMessage(value, room));
+    socket.on("canvas-draw", (commands, room) =>
+      this.drawOnCanvas(commands, room)
+    );
     socket.on("connect_error", (err) => {
       console.log(`connect_error due to ${err.message}`);
     });
@@ -59,6 +62,10 @@ class Connection {
 
   disconnect() {
     users.delete(this.socket);
+  }
+
+  drawOnCanvas(commands, room) {
+    this.socket.broadcast.to(room).emit("canvas-draw", commands);
   }
 }
 

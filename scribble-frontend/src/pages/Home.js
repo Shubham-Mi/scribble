@@ -11,7 +11,6 @@ export default function Home() {
     socket.emit("create-room", (id) => {
       dispatch(changeGameState("lobby"));
       dispatch(joinGame(id));
-      console.log(`Created and Joined room ${id}`);
     });
   }
 
@@ -19,7 +18,6 @@ export default function Home() {
     socket.emit("join-room", joinRoomId.current.value, (id) => {
       dispatch(changeGameState("lobby"));
       dispatch(joinGame(id));
-      console.log(`Joined room ${id}`);
     });
   }
 

@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Canvas() {
+  const { socket, roomId } = useSelector((state) => state.GameStore);
+  let batch = [];
+  let isRequestTimed = false;
+
   const canvasRef = useRef(null);
   const context = useRef(null);
 
@@ -9,12 +14,17 @@ export default function Canvas() {
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "rgb(255, 255, 255)";
-    context.current = ctx;
-  });
+  function sendDrawCommand(command, currentX, currentY) {
+    batch.push([command, startX, startY, currentX, currentY]);
+    if (!isRequestTimed) {
+      setTimeout(() => {
+        socket.emit("canvas-draw", batch, roomId);
+        isRequestTimed = false;
+        batch = [];
+      }, 50);
+      isRequestTimed = true;
+    }
+  }
 
   function drawOnCanvas(startX, startY, currentX, currentY) {
     context.current.fillStyle = "rgb(255, 255, 255)";
@@ -42,13 +52,34 @@ export default function Canvas() {
     if (drawing) {
       if (erasing) {
         eraseOnCanvas(currentX, currentY);
+        sendDrawCommand(1, currentX, currentY);
       } else {
         drawOnCanvas(startX, startY, currentX, currentY);
+        sendDrawCommand(0, currentX, currentY);
         setStartX(currentX);
         setStartY(currentY);
       }
     }
   }
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "rgb(255, 255, 255)";
+    context.current = ctx;
+
+    const drawFromServer = (commands) => {
+      commands.forEach((command) => {
+        if (command[0] === 0) {
+          drawOnCanvas(command[1], command[2], command[3], command[4]);
+        } else if (command[0] === 1) {
+          sendDrawCommand(1, command[3], command[4]);
+        }
+      });
+    };
+
+    socket.on("canvas-draw", drawFromServer);
+  });
 
   function stopDrawing() {
     setDrawing(false);
