@@ -62,25 +62,6 @@ export default function Canvas() {
     }
   }
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "rgb(255, 255, 255)";
-    context.current = ctx;
-
-    const drawFromServer = (commands) => {
-      commands.forEach((command) => {
-        if (command[0] === 0) {
-          drawOnCanvas(command[1], command[2], command[3], command[4]);
-        } else if (command[0] === 1) {
-          sendDrawCommand(1, command[3], command[4]);
-        }
-      });
-    };
-
-    socket.on("canvas-draw", drawFromServer);
-  });
-
   function stopDrawing() {
     setDrawing(false);
   }
@@ -103,6 +84,28 @@ export default function Canvas() {
     setErasing(true);
   }
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "rgb(255, 255, 255)";
+    context.current = ctx;
+
+    const drawFromServer = (commands) => {
+      commands.forEach((command) => {
+        if (command[0] === 0) {
+          console.log("drawing");
+          drawOnCanvas(command[1], command[2], command[3], command[4]);
+        } else if (command[0] === 1) {
+          eraseOnCanvas(command[3], command[4]);
+        } else if (command[0] === 2) {
+          clearCanvas();
+        }
+      });
+    };
+
+    socket.on("canvas-draw", drawFromServer);
+  }, [socket]);
+
   return (
     <div className="canvas-container">
       <canvas
@@ -121,7 +124,13 @@ export default function Canvas() {
         <div className="tool eraser" onClick={() => selectEraser()}>
           Eraser
         </div>
-        <div className="tool clear" onClick={() => clearCanvas()}>
+        <div
+          className="tool clear"
+          onClick={() => {
+            clearCanvas();
+            sendDrawCommand(2, 0, 0);
+          }}
+        >
           Clear
         </div>
       </div>
