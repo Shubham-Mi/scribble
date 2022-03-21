@@ -21,11 +21,6 @@ export default function Home() {
     });
   }
 
-  // const submitForm = (e) => {
-  //   e.preventDefault();
-  //   console.log("Hello");
-  // };
-
   return (
     <div>
       <h1>Scribble Home Page</h1>
@@ -40,9 +35,6 @@ export default function Home() {
         </button>
         <input type="text" ref={joinRoomId} />
       </div>
-      {/* <form onSubmit={submitForm}>
-        <button className="room-join-buttons">Create and Join room</button>
-      </form> */}
     </div>
   );
 }
