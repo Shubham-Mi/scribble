@@ -1,18 +1,27 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setStartX, setStartY } from "../store/CanvasStore";
+import {
+  drawOnCanvas,
+  eraseOnCanvas,
+  selectEraser,
+  selectPen,
+  stopDrawing,
+  setStartPositon,
+  clearCanvas,
+} from "../services/CanvasServices";
 
 export default function Canvas() {
+  const dispatch = useDispatch();
   const { socket, roomId } = useSelector((state) => state.GameStore);
+  const { drawing, erasing, startX, startY } = useSelector(
+    (state) => state.CanvasStore
+  );
   let batch = [];
   let isRequestTimed = false;
 
   const canvasRef = useRef(null);
   const context = useRef(null);
-
-  const [drawing, setDrawing] = useState(false);
-  const [erasing, setErasing] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [startY, setStartY] = useState(0);
 
   function sendDrawCommand(command, currentX, currentY) {
     batch.push([command, startX, startY, currentX, currentY]);
@@ -26,62 +35,21 @@ export default function Canvas() {
     }
   }
 
-  function drawOnCanvas(startX, startY, currentX, currentY) {
-    context.current.fillStyle = "rgb(255, 255, 255)";
-    context.current.beginPath();
-    context.current.moveTo(startX, startY);
-    context.current.lineTo(currentX, currentY);
-    context.current.stroke();
-  }
-
-  function eraseOnCanvas(currentX, currentY) {
-    context.current.fillStyle = "rgb(255, 255, 255)";
-    context.current.fillRect(currentX, currentY, 20, 20);
-  }
-
-  function setStartPositon(e) {
-    setDrawing(true);
-    setStartX(e.nativeEvent.offsetX);
-    setStartY(e.nativeEvent.offsetY);
-  }
-
   function userDraw(e) {
     const currentX = e.nativeEvent.offsetX;
     const currentY = e.nativeEvent.offsetY;
 
     if (drawing) {
       if (erasing) {
-        eraseOnCanvas(currentX, currentY);
+        eraseOnCanvas(context, currentX, currentY);
         sendDrawCommand(1, currentX, currentY);
       } else {
-        drawOnCanvas(startX, startY, currentX, currentY);
+        drawOnCanvas(context, startX, startY, currentX, currentY);
         sendDrawCommand(0, currentX, currentY);
-        setStartX(currentX);
-        setStartY(currentY);
+        dispatch(setStartX(currentX));
+        dispatch(setStartY(currentY));
       }
     }
-  }
-
-  function stopDrawing() {
-    setDrawing(false);
-  }
-
-  function clearCanvas() {
-    context.current.clearRect(
-      0,
-      0,
-      canvasRef.current.width,
-      canvasRef.current.height
-    );
-    setErasing(false);
-  }
-
-  function selectPen() {
-    setErasing(false);
-  }
-
-  function selectEraser() {
-    setErasing(true);
   }
 
   useEffect(() => {
@@ -93,12 +61,11 @@ export default function Canvas() {
     const drawFromServer = (commands) => {
       commands.forEach((command) => {
         if (command[0] === 0) {
-          console.log("drawing");
-          drawOnCanvas(command[1], command[2], command[3], command[4]);
+          drawOnCanvas(context, command[1], command[2], command[3], command[4]);
         } else if (command[0] === 1) {
-          eraseOnCanvas(command[3], command[4]);
+          eraseOnCanvas(context, command[3], command[4]);
         } else if (command[0] === 2) {
-          clearCanvas();
+          clearCanvas(context, canvasRef.current);
         }
       });
     };
@@ -113,21 +80,21 @@ export default function Canvas() {
         height="500"
         width="500"
         ref={canvasRef}
-        onMouseDown={(e) => setStartPositon(e)}
+        onMouseDown={(e) => setStartPositon(dispatch, e.nativeEvent)}
         onMouseMove={(e) => userDraw(e)}
-        onMouseUp={() => stopDrawing()}
+        onMouseUp={() => stopDrawing(dispatch)}
       />
       <div className="canvas-container__tools">
-        <div className="tool pencil" onClick={() => selectPen()}>
+        <div className="tool pencil" onClick={() => selectPen(dispatch)}>
           Pencil
         </div>
-        <div className="tool eraser" onClick={() => selectEraser()}>
+        <div className="tool eraser" onClick={() => selectEraser(dispatch)}>
           Eraser
         </div>
         <div
           className="tool clear"
           onClick={() => {
-            clearCanvas();
+            clearCanvas(context, canvasRef.current);
             sendDrawCommand(2, 0, 0);
           }}
         >

@@ -1,10 +1,9 @@
 // ACTION TYPES
-const CONNECT_SOCKET = "socket";
-const JOIN_GAME = "game/join";
-const GAME_STATE = "game/state";
+const CONNECT_SOCKET = "socket/connect";
+const JOIN_GAME = "room/join";
+const GAME_STATE = "room/state";
 
 // ACTIONS
-
 export const joinGame = (id) => {
   return {
     type: JOIN_GAME,
