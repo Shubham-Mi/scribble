@@ -10,4 +10,4 @@ function RoomIdGenerator() {
   return result;
 }
 
-module.exports = RoomIdGenerator;
+module.exports = { RoomIdGenerator };
