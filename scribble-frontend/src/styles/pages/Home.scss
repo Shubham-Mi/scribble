@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
+
 .home {
   display: flex;
   justify-content: space-between;
@@ -17,4 +19,50 @@
 
 .form__info {
   flex: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  color: $title-color;
+  font-family: "Bree Serif", serif;
+  font-size: 8rem;
+  font-style: italic;
+}
+
+.form__input {
+  margin-top: 4rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  border: none;
+  border-bottom: 1px solid $black;
+  outline: none;
+  background: $background-color;
+  font-size: 2rem;
+  color: $text-color;
+}
+
+#name-input {
+  align-self: flex-start;
+}
+
+#room-input {
+  align-self: flex-end;
+}
+
+.form__submit {
+  margin: 5rem;
+  padding: 1rem;
+  border-radius: 2rem;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: 500ms ease-in-out;
+  background: $button-color;
+  color: $white;
+
+  &:hover,
+  &:focus {
+    transform: scale(120%);
+  }
 }

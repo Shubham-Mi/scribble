@@ -43,23 +43,25 @@ export default function Home() {
       <form className="form__info" onSubmit={sumbitForm}>
         <div className="title">Scribble</div>
         <input
-          className="name-input"
+          className="form__input"
+          id="name-input"
+          placeholder="Enter your name"
           autoFocus
           value={name}
-          placeholder="Enter your name"
           onChange={(e) => {
             setName(e.currentTarget.value);
           }}
         />
         <input
-          className="room-input"
-          value={value}
+          className="form__input"
+          id="room-input"
           placeholder="Enter room Id"
+          value={value}
           onChange={(e) => {
             setValue(e.currentTarget.value);
           }}
         />
-        <button className="room-join-buttons">
+        <button className="form__submit">
           {value === "" && `Create Room`}
           {value !== "" && "Join Room"}
         </button>
