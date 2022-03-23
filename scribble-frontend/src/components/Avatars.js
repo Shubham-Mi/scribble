@@ -33,168 +33,196 @@ export default function Avatars({ selectAvatar }) {
     <div className="avatar__container">
       <img
         onClick={() => selectAvatar("avatar1")}
+        id="avatar1"
         className="avatar__select"
         src={avatar1}
         alt="avatar1"
       />
       <img
         onClick={() => selectAvatar("avatar2")}
+        id="avatar2"
         className="avatar__select"
         src={avatar2}
         alt="avatar2"
       />
       <img
         onClick={() => selectAvatar("avatar3")}
+        id="avatar3"
         className="avatar__select"
         src={avatar3}
         alt="avatar3"
       />
       <img
         onClick={() => selectAvatar("avatar4")}
+        id="avatar4"
         className="avatar__select"
         src={avatar4}
         alt="avatar4"
       />
       <img
         onClick={() => selectAvatar("avatar5")}
+        id="avatar5"
         className="avatar__select"
         src={avatar5}
         alt="avatar5"
       />
       <img
         onClick={() => selectAvatar("avatar6")}
+        id="avatar6"
         className="avatar__select"
         src={avatar6}
         alt="avatar6"
       />
       <img
         onClick={() => selectAvatar("avatar7")}
+        id="avatar7"
         className="avatar__select"
         src={avatar7}
         alt="avatar7"
       />
       <img
         onClick={() => selectAvatar("avatar8")}
+        id="avatar8"
         className="avatar__select"
         src={avatar8}
         alt="avatar8"
       />
       <img
         onClick={() => selectAvatar("avatar9")}
+        id="avatar9"
         className="avatar__select"
         src={avatar9}
         alt="avatar9"
       />
       <img
         onClick={() => selectAvatar("avatar10")}
+        id="avatar10"
         className="avatar__select"
         src={avatar10}
         alt="avatar10"
       />
       <img
         onClick={() => selectAvatar("avatar11")}
+        id="avatar11"
         className="avatar__select"
         src={avatar11}
         alt="avatar11"
       />
       <img
         onClick={() => selectAvatar("avatar12")}
+        id="avatar12"
         className="avatar__select"
         src={avatar12}
         alt="avatar12"
       />
       <img
         onClick={() => selectAvatar("avatar13")}
+        id="avatar13"
         className="avatar__select"
         src={avatar13}
         alt="avatar13"
       />
       <img
         onClick={() => selectAvatar("avatar14")}
+        id="avatar14"
         className="avatar__select"
         src={avatar14}
         alt="avatar14"
       />
       <img
         onClick={() => selectAvatar("avatar15")}
+        id="avatar15"
         className="avatar__select"
         src={avatar15}
         alt="avatar15"
       />
       <img
         onClick={() => selectAvatar("avatar16")}
+        id="avatar16"
         className="avatar__select"
         src={avatar16}
         alt="avatar16"
       />
       <img
         onClick={() => selectAvatar("avatar17")}
+        id="avatar17"
         className="avatar__select"
         src={avatar17}
         alt="avatar17"
       />
       <img
         onClick={() => selectAvatar("avatar18")}
+        id="avatar18"
         className="avatar__select"
         src={avatar18}
         alt="avatar18"
       />
       <img
         onClick={() => selectAvatar("avatar19")}
+        id="avatar19"
         className="avatar__select"
         src={avatar19}
         alt="avatar19"
       />
       <img
         onClick={() => selectAvatar("avatar20")}
+        id="avatar20"
         className="avatar__select"
         src={avatar20}
         alt="avatar20"
       />
       <img
         onClick={() => selectAvatar("avatar21")}
+        id="avatar21"
         className="avatar__select"
         src={avatar21}
         alt="avatar21"
       />
       <img
         onClick={() => selectAvatar("avatar22")}
+        id="avatar22"
         className="avatar__select"
         src={avatar22}
         alt="avatar22"
       />
       <img
         onClick={() => selectAvatar("avatar23")}
+        id="avatar23"
         className="avatar__select"
         src={avatar23}
         alt="avatar23"
       />
       <img
         onClick={() => selectAvatar("avatar24")}
+        id="avatar24"
         className="avatar__select"
         src={avatar24}
         alt="avatar24"
       />
       <img
         onClick={() => selectAvatar("avatar25")}
+        id="avatar25"
         className="avatar__select"
         src={avatar25}
         alt="avatar25"
       />
       <img
         onClick={() => selectAvatar("avatar26")}
+        id="avatar26"
         className="avatar__select"
         src={avatar26}
         alt="avatar26"
       />
       <img
         onClick={() => selectAvatar("avatar27")}
+        id="avatar27"
         className="avatar__select"
         src={avatar27}
         alt="avatar27"
       />
       <img
         onClick={() => selectAvatar("avatar28")}
+        id="avatar28"
         className="avatar__select"
         src={avatar28}
         alt="avatar28"

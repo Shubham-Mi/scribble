@@ -12,6 +12,10 @@ export default function Home() {
 
   function selectAvatar(name) {
     setAvatar(name);
+    for (let i = 1; i <= 28; i++) {
+      document.getElementById(`avatar${i}`).classList.remove("avatar-selected");
+    }
+    document.getElementById(name).classList.add("avatar-selected");
   }
 
   const sumbitForm = (e) => {
