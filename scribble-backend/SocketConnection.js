@@ -6,6 +6,7 @@ const users = new Map();
 
 const defaultUser = {
   name: "user",
+  avatar: "avatar1",
 };
 
 const messageExpirationTimeMS = 10 * 60 * 1000;
@@ -15,9 +16,11 @@ class Connection {
     this.socket = socket;
     this.io = io;
 
-    socket.on("create-room", (name, func) => this.createRoom(name, func));
-    socket.on("join-room", (room, name, func) =>
-      this.joinRoom(room, name, func)
+    socket.on("create-room", (name, avatar, func) =>
+      this.createRoom(name, avatar, func)
+    );
+    socket.on("join-room", (room, name, avatar, func) =>
+      this.joinRoom(room, name, avatar, func)
     );
     socket.on("disconnect", () => this.disconnect());
     socket.on("message", (value, room) => this.handleMessage(value, room));
@@ -29,18 +32,18 @@ class Connection {
     });
   }
 
-  createRoom(userName, setRoomIdFunction) {
+  createRoom(userName, userAvatar, setRoomIdFunction) {
     const id = RoomIdGenerator();
     this.socket.join(id);
-    users.set(this.socket, { name: userName });
+    users.set(this.socket, { name: userName, avatar: userAvatar });
     console.log(`Room created with room id ${id}`);
     console.log(`Player ${this.socket.id} joined room ${id}`);
     setRoomIdFunction(id);
   }
 
-  joinRoom(room, userName, setRoomIdFunction) {
+  joinRoom(room, userName, userAvatar, setRoomIdFunction) {
     this.socket.join(room);
-    users.set(this.socket, { name: userName });
+    users.set(this.socket, { name: userName, avatar: userAvatar });
     console.log(`Player ${this.socket.id} joined room ${room}`);
     setRoomIdFunction(room);
   }
