@@ -1,25 +1,21 @@
-.room-settings {
+.rules {
   flex: 3;
   margin: 1.5rem;
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  background: $settings-color;
+  background: $rules-color;
 }
 
-.settings__title {
+.rules__title {
   font-family: "Bree Serif", serif;
   font-size: 3rem;
   align-self: center;
 }
 
-.settings__subtitle {
+.rules__subtitle {
   font-family: "Bree Serif", serif;
   font-size: 1.5rem;
   margin-top: 2rem;
   margin-bottom: 0.5rem;
-}
-
-.setting__select {
-  font-size: 1rem;
 }
