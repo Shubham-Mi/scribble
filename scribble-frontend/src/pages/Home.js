@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { joinGame, changeGameState } from "../store/GameStore";
+import { joinGame, changeGameState } from "../store/RoomStore";
+import { setPlayerName, setPlayerAvatar } from "../store/PlayerStore";
 import Avatars from "../components/Avatars";
+import Title from "../components/Title";
 
 export default function Home() {
-  const { socket } = useSelector((state) => state.GameStore);
-  const [value, setValue] = useState("");
+  const { socket } = useSelector((state) => state.PlayerStore);
+  const [room, setRoom] = useState("");
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("avatar1");
   const dispatch = useDispatch();
@@ -21,16 +23,18 @@ export default function Home() {
   const sumbitForm = (e) => {
     e.preventDefault();
 
-    if (value === "") {
+    if (room === "") {
       socket.emit("create-room", name, avatar, (id) => {
         dispatch(joinGame(id));
       });
     } else {
-      socket.emit("join-room", value, name, avatar, (id) => {
+      socket.emit("join-room", room, name, avatar, (id) => {
         dispatch(joinGame(id));
         console.log(id);
       });
     }
+    dispatch(setPlayerName(name));
+    dispatch(setPlayerAvatar(avatar));
     dispatch(changeGameState("lobby"));
   };
 
@@ -41,7 +45,7 @@ export default function Home() {
         <Avatars selectAvatar={selectAvatar} />
       </div>
       <form className="form__info" onSubmit={sumbitForm}>
-        <div className="title">Scribble</div>
+        <Title />
         <input
           className="form__input"
           id="name-input"
@@ -56,14 +60,14 @@ export default function Home() {
           className="form__input"
           id="room-input"
           placeholder="Enter room Id"
-          value={value}
+          value={room}
           onChange={(e) => {
-            setValue(e.currentTarget.value);
+            setRoom(e.currentTarget.value);
           }}
         />
         <button className="form__submit">
-          {value === "" && `Create Room`}
-          {value !== "" && "Join Room"}
+          {room === "" && `Create Room`}
+          {room !== "" && "Join Room"}
         </button>
       </form>
     </div>

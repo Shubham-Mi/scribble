@@ -1,7 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
+
 @import "./settings/reset.scss";
 @import "./settings/variables.scss";
 @import "./pages/Home.scss";
+@import "./pages/Lobby.scss";
 @import "./components/Avatars.scss";
+@import "./components/Settings.scss";
+@import "./components/Title.scss";
 
 body {
   background-color: $background-color;

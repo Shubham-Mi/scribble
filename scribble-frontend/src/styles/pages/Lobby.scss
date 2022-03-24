@@ -1,0 +1,16 @@
+.lobby {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    align-self: center;
+  }
+}
+
+.lobby__info {
+  display: flex;
+}
+
+.right {
+  flex: 7;
+}
