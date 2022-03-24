@@ -9,7 +9,7 @@ export default function Lobby() {
       <Title />
       <div className="lobby__info">
         <Settings />
-        <div className="start">Start</div>
+        <button className="start">Start</button>
         <Rules />
       </div>
       <div>All Player's avatars</div>

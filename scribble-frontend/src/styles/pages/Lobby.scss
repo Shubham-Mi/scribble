@@ -1,6 +1,8 @@
 .lobby {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   .title {
     align-self: center;
@@ -13,4 +15,51 @@
 
 .start {
   flex: 4;
+  align-self: center;
+  max-width: 300px;
+  max-height: 60px;
+  font-family: "Nunito", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  background: $button-background-3;
+  background: linear-gradient(
+    90deg,
+    $button-background-1 0%,
+    $button-background-2 100%
+  );
+  border: none;
+  border-radius: 5rem;
+  box-shadow: 1rem 1rem 2rem lighten($button-background-2, 36%);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 10px;
+
+  &::before {
+    content: "";
+    border-radius: 5rem;
+    min-width: calc(300px + 12px);
+    min-height: calc(60px + 12px);
+    border: 6px solid $button-background-4;
+    box-shadow: 0 0 60px $button-background-5;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all 0.3s ease-in-out 0s;
+  }
+
+  &:hover,
+  &:focus {
+    transform: translateY(-6px);
+  }
+
+  &:hover::before,
+  &:focus::before {
+    opacity: 1;
+  }
 }
