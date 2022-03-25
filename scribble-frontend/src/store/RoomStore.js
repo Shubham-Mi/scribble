@@ -3,6 +3,8 @@ const JOIN_GAME = "room/join";
 const GAME_STATE = "room/state";
 const ROUNDS = "room/settings/rounds";
 const TIME = "room/settings/time";
+const ADD_PLAYER = "room/player/add";
+const REMOVE_PLAYER = "room/player/remove";
 
 // ACTIONS
 export const joinGame = (id) => {
@@ -33,9 +35,29 @@ export const setTime = (time) => {
   };
 };
 
+export const addPlayer = (player) => {
+  return {
+    type: ADD_PLAYER,
+    payload: player,
+  };
+};
+
+export const removePlayer = (player) => {
+  return {
+    type: REMOVE_PLAYER,
+    payload: player,
+  };
+};
+
 // REDUCER
 export default function reducer(
-  state = { roomId: null, gameState: "none", rounds: 1, time: 60 },
+  state = {
+    roomId: null,
+    gameState: "connecting",
+    rounds: 1,
+    time: 60,
+    players: {},
+  },
   action
 ) {
   switch (action.type) {
@@ -61,6 +83,25 @@ export default function reducer(
       return {
         ...state,
         time: action.payload,
+      };
+    }
+    case ADD_PLAYER: {
+      const id = action.payload.id;
+      return {
+        ...state,
+        players: {
+          ...state.players,
+          [id]: action.payload,
+        },
+      };
+    }
+    case REMOVE_PLAYER: {
+      const allPlayers = state.players;
+      const id = action.payload.id;
+      delete allPlayers[id];
+      return {
+        ...state,
+        players: allPlayers,
       };
     }
     default: {

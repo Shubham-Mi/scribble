@@ -3,10 +3,33 @@ const { RoomIdGenerator } = require("./services/RoomServices");
 
 const messages = new Set();
 const users = new Map();
+var rooms = {};
+
+function addUserToRoom(room, user) {
+  rooms[room] = rooms[room] || [];
+  rooms[room].push(user);
+}
+
+function removeUserFromRoom(room, user) {
+  rooms[room] = rooms[room] || [];
+
+  for (let i = 0; i < rooms[room].length; i++) {
+    if (rooms[room][i].id === user.id) {
+      rooms[room].splice(i, 1);
+      i--;
+    }
+  }
+
+  if (rooms[room].length === 0) {
+    delete rooms[room];
+  }
+}
 
 const defaultUser = {
+  id: -1,
   name: "user",
   avatar: "avatar1",
+  score: 0,
 };
 
 const messageExpirationTimeMS = 10 * 60 * 1000;
@@ -15,6 +38,7 @@ class Connection {
   constructor(io, socket) {
     this.socket = socket;
     this.io = io;
+    this.room = "";
 
     socket.on("create-room", (name, avatar, func) =>
       this.createRoom(name, avatar, func)
@@ -34,18 +58,31 @@ class Connection {
 
   createRoom(userName, userAvatar, setRoomIdFunction) {
     const id = RoomIdGenerator();
+    this.room = id;
     this.socket.join(id);
-    users.set(this.socket, { name: userName, avatar: userAvatar });
-    console.log(`Room created with room id ${id}`);
-    console.log(`Player ${this.socket.id} joined room ${id}`);
+    users.set(this.socket, {
+      id: this.socket.id,
+      name: userName,
+      avatar: userAvatar,
+      score: 0,
+    });
+    addUserToRoom(this.room, users.get(this.socket));
     setRoomIdFunction(id);
+    this.io.to(this.room).emit("player-joined", rooms[this.room]);
   }
 
   joinRoom(room, userName, userAvatar, setRoomIdFunction) {
+    this.room = room;
     this.socket.join(room);
-    users.set(this.socket, { name: userName, avatar: userAvatar });
-    console.log(`Player ${this.socket.id} joined room ${room}`);
+    users.set(this.socket, {
+      id: this.socket.id,
+      name: userName,
+      avatar: userAvatar,
+      score: 0,
+    });
     setRoomIdFunction(room);
+    addUserToRoom(this.room, users.get(this.socket));
+    this.io.to(this.room).emit("player-joined", rooms[this.room]);
   }
 
   handleMessage(value, room) {
@@ -67,6 +104,8 @@ class Connection {
   }
 
   disconnect() {
+    removeUserFromRoom(this.room, users.get(this.socket));
+    this.io.to(this.room).emit("player-left", users.get(this.socket));
     users.delete(this.socket);
   }
 

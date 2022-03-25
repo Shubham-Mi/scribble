@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { joinGame, changeGameState } from "../store/RoomStore";
 import { setPlayerName, setPlayerAvatar } from "../store/PlayerStore";
 import Avatars from "../components/Avatars";
 import Title from "../components/Title";
+import { addPlayer, removePlayer } from "../store/RoomStore";
 
 export default function Home() {
   const { socket } = useSelector((state) => state.PlayerStore);
@@ -30,13 +31,27 @@ export default function Home() {
     } else {
       socket.emit("join-room", room, name, avatar, (id) => {
         dispatch(joinGame(id));
-        console.log(id);
       });
     }
     dispatch(setPlayerName(name));
     dispatch(setPlayerAvatar(avatar));
     dispatch(changeGameState("lobby"));
   };
+
+  useEffect(() => {
+    const joinPlayer = (players) => {
+      players.forEach((player) => {
+        dispatch(addPlayer(player));
+      });
+    };
+
+    const leavePlayer = (player) => {
+      dispatch(removePlayer(player));
+    };
+
+    socket.on("player-joined", joinPlayer);
+    socket.on("player-left", leavePlayer);
+  }, [dispatch, socket]);
 
   return (
     <div className="home">
