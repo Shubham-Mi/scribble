@@ -4,36 +4,22 @@ import { setStartX, setStartY } from "../store/CanvasStore";
 import {
   drawOnCanvas,
   eraseOnCanvas,
-  selectEraser,
-  selectPen,
   stopDrawing,
   setStartPositon,
   clearCanvas,
+  sendDrawCommand,
 } from "../services/CanvasServices";
 
 export default function Canvas() {
   const dispatch = useDispatch();
-  const { socket, roomId } = useSelector((state) => state.GameStore);
+  const { socket } = useSelector((state) => state.PlayerStore);
+  const { roomId } = useSelector((state) => state.RoomStore);
   const { drawing, erasing, startX, startY } = useSelector(
     (state) => state.CanvasStore
   );
-  let batch = [];
-  let isRequestTimed = false;
 
   const canvasRef = useRef(null);
   const context = useRef(null);
-
-  function sendDrawCommand(command, currentX, currentY) {
-    batch.push([command, startX, startY, currentX, currentY]);
-    if (!isRequestTimed) {
-      setTimeout(() => {
-        socket.emit("canvas-draw", batch, roomId);
-        isRequestTimed = false;
-        batch = [];
-      }, 50);
-      isRequestTimed = true;
-    }
-  }
 
   function userDraw(e) {
     const currentX = e.nativeEvent.offsetX;
@@ -42,10 +28,10 @@ export default function Canvas() {
     if (drawing) {
       if (erasing) {
         eraseOnCanvas(context, currentX, currentY);
-        sendDrawCommand(1, currentX, currentY);
+        sendDrawCommand(socket, roomId, 1, startX, startY, currentX, currentY);
       } else {
         drawOnCanvas(context, startX, startY, currentX, currentY);
-        sendDrawCommand(0, currentX, currentY);
+        sendDrawCommand(socket, roomId, 0, startX, startY, currentX, currentY);
         dispatch(setStartX(currentX));
         dispatch(setStartY(currentY));
       }
@@ -54,6 +40,8 @@ export default function Canvas() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    canvas.width = window.innerWidth * 0.7;
+    canvas.height = window.innerHeight * 0.7;
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "rgb(255, 255, 255)";
     context.current = ctx;
@@ -84,23 +72,15 @@ export default function Canvas() {
         onMouseMove={(e) => userDraw(e)}
         onMouseUp={() => stopDrawing(dispatch)}
       />
-      <div className="canvas-container__tools">
-        <div className="tool pencil" onClick={() => selectPen(dispatch)}>
-          Pencil
-        </div>
-        <div className="tool eraser" onClick={() => selectEraser(dispatch)}>
-          Eraser
-        </div>
-        <div
-          className="tool clear"
-          onClick={() => {
-            clearCanvas(context, canvasRef.current);
-            sendDrawCommand(2, 0, 0);
-          }}
-        >
-          Clear
-        </div>
-      </div>
     </div>
+    //   <div
+    //   className="tool clear"
+    //   onClick={() => {
+    //     clearCanvas(context, canvasRef.current);
+    //     sendDrawCommand(2, 0, 0);
+    //   }}
+    // >
+    //   Clear
+    // </div>
   );
 }

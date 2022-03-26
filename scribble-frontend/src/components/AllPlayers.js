@@ -15,30 +15,9 @@ export default function AllPlayers() {
       {[...Object.values(allPlayers)].map((player) => (
         <div key={player.id} className="players__player">
           {player.name}
-          <SingleAvatar
-            className="players__avatar"
-            avatarName={player.avatar}
-          />
+          <SingleAvatar avatarName={player.avatar} />
         </div>
       ))}
-      {/* <div className="players__player">
-        <SingleAvatar className="players__avatar" avatarName="avatar1" />
-      </div>
-      <div className="players__player">
-        <SingleAvatar className="players__avatar" avatarName="avatar1" />
-      </div>
-      <div className="players__player">
-        <SingleAvatar className="players__avatar" avatarName="avatar1" />
-      </div>
-      <div className="players__player">
-        <SingleAvatar className="players__avatar" avatarName="avatar1" />
-      </div>
-      <div className="players__player">
-        <SingleAvatar className="players__avatar" avatarName="avatar1" />
-      </div>
-      <div className="players__player">
-        <SingleAvatar className="players__avatar" avatarName="avatar1" />
-      </div> */}
     </div>
   );
 }

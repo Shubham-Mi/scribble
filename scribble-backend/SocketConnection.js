@@ -51,6 +51,7 @@ class Connection {
     socket.on("canvas-draw", (commands, room) =>
       this.drawOnCanvas(commands, room)
     );
+    socket.on("start-game", () => this.startGame());
     socket.on("connect_error", (err) => {
       console.log(`connect_error due to ${err.message}`);
     });
@@ -111,6 +112,10 @@ class Connection {
 
   drawOnCanvas(commands, room) {
     this.socket.broadcast.to(room).emit("canvas-draw", commands);
+  }
+
+  startGame() {
+    this.socket.broadcast.to(this.room).emit("start-game");
   }
 }
 

@@ -1,0 +1,15 @@
+.play-area {
+  margin: 1rem;
+  display: flex;
+  height: 75vh;
+}
+
+.right__component {
+  flex: 3;
+}
+
+.guess__word {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

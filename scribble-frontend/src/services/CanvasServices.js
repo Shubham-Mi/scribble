@@ -39,3 +39,26 @@ export function setStartPositon(dispatch, coordinates) {
   dispatch(setStartX(coordinates.offsetX));
   dispatch(setStartY(coordinates.offsetY));
 }
+
+let batch = [];
+let isRequestTimed = false;
+
+export function sendDrawCommand(
+  socket,
+  roomId,
+  command,
+  startX,
+  startY,
+  currentX,
+  currentY
+) {
+  batch.push([command, startX, startY, currentX, currentY]);
+  if (!isRequestTimed) {
+    setTimeout(() => {
+      socket.emit("canvas-draw", batch, roomId);
+      isRequestTimed = false;
+      batch = [];
+    }, 50);
+    isRequestTimed = true;
+  }
+}
