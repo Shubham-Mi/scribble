@@ -34,8 +34,8 @@ export default function Settings() {
         value={noofRounds}
         onChange={handleRoundChange}
       >
-        {rounds.map((key, round) => (
-          <option key={key} value={round}>
+        {rounds.map((round) => (
+          <option key={round} value={round}>
             {round}
           </option>
         ))}
@@ -46,8 +46,8 @@ export default function Settings() {
         value={timePerRound}
         onChange={handleTimeChange}
       >
-        {timers.map((key, timer) => (
-          <option key={key} value={timer}>
+        {timers.map((timer) => (
+          <option key={timer} value={timer}>
             {timer}
           </option>
         ))}

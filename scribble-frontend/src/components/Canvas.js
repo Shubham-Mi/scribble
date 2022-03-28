@@ -14,9 +14,8 @@ export default function Canvas() {
   const dispatch = useDispatch();
   const { socket } = useSelector((state) => state.PlayerStore);
   const { roomId } = useSelector((state) => state.RoomStore);
-  const { drawing, erasing, startX, startY } = useSelector(
-    (state) => state.CanvasStore
-  );
+  const { drawing, erasing, startX, startY, penColor, backgroundColor } =
+    useSelector((state) => state.CanvasStore);
 
   const canvasRef = useRef(null);
   const context = useRef(null);
@@ -27,10 +26,10 @@ export default function Canvas() {
 
     if (drawing) {
       if (erasing) {
-        eraseOnCanvas(context, currentX, currentY);
+        eraseOnCanvas(context, currentX, currentY, backgroundColor);
         sendDrawCommand(socket, roomId, 1, startX, startY, currentX, currentY);
       } else {
-        drawOnCanvas(context, startX, startY, currentX, currentY);
+        drawOnCanvas(context, startX, startY, currentX, currentY, penColor);
         sendDrawCommand(socket, roomId, 0, startX, startY, currentX, currentY);
         dispatch(setStartX(currentX));
         dispatch(setStartY(currentY));
@@ -43,15 +42,23 @@ export default function Canvas() {
     canvas.width = window.innerWidth * 0.7;
     canvas.height = window.innerHeight * 0.7;
     const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "rgb(255, 255, 255)";
+    ctx.fillStyle = penColor;
+    ctx.strokeStyle = penColor;
     context.current = ctx;
 
     const drawFromServer = (commands) => {
       commands.forEach((command) => {
         if (command[0] === 0) {
-          drawOnCanvas(context, command[1], command[2], command[3], command[4]);
+          drawOnCanvas(
+            context,
+            command[1],
+            command[2],
+            command[3],
+            command[4],
+            penColor
+          );
         } else if (command[0] === 1) {
-          eraseOnCanvas(context, command[3], command[4]);
+          eraseOnCanvas(context, command[3], command[4], backgroundColor);
         } else if (command[0] === 2) {
           clearCanvas(context, canvasRef.current);
         }
