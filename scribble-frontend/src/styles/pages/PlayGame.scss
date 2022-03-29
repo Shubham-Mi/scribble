@@ -5,11 +5,15 @@
 }
 
 .right__component {
-  flex: 3;
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .guess__word {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  border: 1px solid red;
 }

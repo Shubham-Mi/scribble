@@ -9,9 +9,10 @@ import { changeGameState } from "../store/RoomStore";
 export default function Lobby() {
   const dispatch = useDispatch();
   const { socket } = useSelector((state) => state.PlayerStore);
+  const { rounds } = useSelector((state) => state.RoomStore);
 
   const setGameState = () => {
-    socket.emit("start-game");
+    socket.emit("start-game", rounds);
     dispatch(changeGameState("start"));
   };
 

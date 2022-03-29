@@ -27,10 +27,28 @@ export default function Canvas() {
     if (drawing) {
       if (erasing) {
         eraseOnCanvas(context, currentX, currentY, backgroundColor);
-        sendDrawCommand(socket, roomId, 1, startX, startY, currentX, currentY);
+        sendDrawCommand(
+          socket,
+          roomId,
+          1,
+          startX,
+          startY,
+          currentX,
+          currentY,
+          backgroundColor
+        );
       } else {
         drawOnCanvas(context, startX, startY, currentX, currentY, penColor);
-        sendDrawCommand(socket, roomId, 0, startX, startY, currentX, currentY);
+        sendDrawCommand(
+          socket,
+          roomId,
+          0,
+          startX,
+          startY,
+          currentX,
+          currentY,
+          penColor
+        );
         dispatch(setStartX(currentX));
         dispatch(setStartY(currentY));
       }
@@ -39,7 +57,7 @@ export default function Canvas() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = window.innerWidth * 0.7;
+    canvas.width = window.innerWidth * 0.6;
     canvas.height = window.innerHeight * 0.7;
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = penColor;
@@ -55,10 +73,10 @@ export default function Canvas() {
             command[2],
             command[3],
             command[4],
-            penColor
+            command[5]
           );
         } else if (command[0] === 1) {
-          eraseOnCanvas(context, command[3], command[4], backgroundColor);
+          eraseOnCanvas(context, command[3], command[4], command[5]);
         } else if (command[0] === 2) {
           clearCanvas(context, canvasRef.current);
         }
