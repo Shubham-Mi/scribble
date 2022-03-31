@@ -49,7 +49,7 @@ function chat(player, message) {
 }
 
 function draw(player, commands) {
-  player.socket.to(player.activeGame.sessionId).emit("round/draw", commands);
+  player.socket.to(player.activeGame.sessionId).emit("canvas-draw", commands);
 }
 
 module.exports = {

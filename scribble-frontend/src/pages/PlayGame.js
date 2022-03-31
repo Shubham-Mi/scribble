@@ -3,6 +3,8 @@ import AllPlayers from "../components/AllPlayers";
 import Canvas from "../components/Canvas";
 import CanvasTools from "../components/CanvasTools";
 import Chat from "../components/Chat";
+import Timer from "../components/Timer";
+import Word from "../components/Word";
 
 export default function PlayGame() {
   return (
@@ -11,8 +13,8 @@ export default function PlayGame() {
       <Canvas />
       <div className="right__component">
         <div className="guess__word">
-          <span>Word</span>
-          <span>Timer</span>
+          <Word />
+          <Timer />
         </div>
         <Chat />
       </div>

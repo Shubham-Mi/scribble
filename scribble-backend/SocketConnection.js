@@ -23,8 +23,8 @@ class Connection {
 
     socket.on("disconnect", () => disconnect(player));
 
-    socket.on("session/start", (rounds, timer) =>
-      startGame(player, rounds, timer)
+    socket.on("session/start", (rounds, time) =>
+      startGame(player, rounds, time)
     );
 
     socket.on("session/chat", (message) => chat(player, message));

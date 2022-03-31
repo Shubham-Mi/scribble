@@ -4,7 +4,7 @@ import Rules from "../components/Rules";
 import Settings from "../components/Settings";
 import Title from "../components/Title";
 import AllPlayers from "../components/AllPlayers";
-import { changeGameState } from "../store/RoomStore";
+import { changeGameState, setTime } from "../store/RoomStore";
 
 export default function Lobby() {
   const dispatch = useDispatch();
@@ -16,7 +16,8 @@ export default function Lobby() {
   };
 
   useEffect(() => {
-    const startGame = () => {
+    const startGame = (timer) => {
+      dispatch(setTime(timer));
       dispatch(changeGameState("start"));
     };
 

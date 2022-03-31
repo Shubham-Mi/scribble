@@ -2,6 +2,7 @@
 const CONNECT_SOCKET = "socket/connect";
 const PLAYER_NAME = "player/name";
 const PLAYER_AVATAR = "player/avatar";
+const PLAYER_ROLE = "player/role";
 
 // ACTIONS
 export const connectSocket = (socket) => {
@@ -25,9 +26,21 @@ export const setPlayerAvatar = (avatar) => {
   };
 };
 
+export const setPlayerRole = (role) => {
+  return {
+    type: PLAYER_ROLE,
+    payload: role,
+  };
+};
+
 // REDUCER
 export default function reducer(
-  state = { socket: null, playerName: "user", avatar: "avatar1" },
+  state = {
+    socket: null,
+    playerName: "user",
+    avatar: "avatar1",
+    role: "guesser",
+  },
   action
 ) {
   switch (action.type) {
@@ -47,6 +60,12 @@ export default function reducer(
       return {
         ...state,
         avatar: action.payload,
+      };
+    }
+    case PLAYER_ROLE: {
+      return {
+        ...state,
+        role: action.payload,
       };
     }
     default: {

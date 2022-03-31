@@ -18,6 +18,10 @@ class GameSession {
     this._gainedPoints = 500;
   }
 
+  get scoreboard() {
+    return this._scoreboard;
+  }
+
   get currentWord() {
     return this._currentWord;
   }
@@ -30,7 +34,7 @@ class GameSession {
     return this._totalRounds;
   }
 
-  get Timer() {
+  get timer() {
     return this._timer;
   }
 
@@ -39,7 +43,7 @@ class GameSession {
   }
 
   setTimer(timer) {
-    this._timer = timer;
+    this._timer = Math.floor(timer);
   }
 
   addPlayer(player) {
