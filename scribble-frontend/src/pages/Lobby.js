@@ -9,11 +9,10 @@ import { changeGameState } from "../store/RoomStore";
 export default function Lobby() {
   const dispatch = useDispatch();
   const { socket } = useSelector((state) => state.PlayerStore);
-  const { rounds } = useSelector((state) => state.RoomStore);
+  const { rounds, time } = useSelector((state) => state.RoomStore);
 
   const setGameState = () => {
-    socket.emit("start-game", rounds);
-    dispatch(changeGameState("start"));
+    socket.emit("session/start", rounds, time);
   };
 
   useEffect(() => {
@@ -21,7 +20,7 @@ export default function Lobby() {
       dispatch(changeGameState("start"));
     };
 
-    socket.on("start-game", startGame);
+    socket.on("game/start", startGame);
   }, [dispatch, socket]);
 
   return (

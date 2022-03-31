@@ -25,11 +25,11 @@ export default function Home() {
     e.preventDefault();
 
     if (room === "") {
-      socket.emit("create-room", name, avatar, (id) => {
+      socket.emit("session/create", name, avatar, (id) => {
         dispatch(joinGame(id));
       });
     } else {
-      socket.emit("join-room", room, name, avatar, (id) => {
+      socket.emit("session/join", room, name, avatar, (id) => {
         dispatch(joinGame(id));
       });
     }
@@ -40,8 +40,8 @@ export default function Home() {
 
   useEffect(() => {
     const joinPlayer = (players) => {
-      players.forEach((player) => {
-        dispatch(addPlayer(player));
+      [...Object.values(players)].map((player) => {
+        return dispatch(addPlayer(player));
       });
     };
 
@@ -49,8 +49,8 @@ export default function Home() {
       dispatch(removePlayer(player));
     };
 
-    socket.on("player-joined", joinPlayer);
-    socket.on("player-left", leavePlayer);
+    socket.on("session/player/join", joinPlayer);
+    socket.on("session/player/left", leavePlayer);
   }, [dispatch, socket]);
 
   return (
