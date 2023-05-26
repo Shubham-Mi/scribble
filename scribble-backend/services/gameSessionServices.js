@@ -81,17 +81,17 @@ class GameSessionServies {
   }
 
   playerGuess(player, word) {
+    let guessed = false;
     if (this._session.guessWord(player, word)) {
-      player.socket
-        .to(this._session.sessionId)
-        .emit("round/guess", player, word, true);
-      player.socket.emit("round/guess", player, word, true);
-    } else {
-      player.socket
-        .to(this._session.sessionId)
-        .emit("round/guess", player, word, false);
-      player.socket.emit("round/guess", player, word, false);
+      guessed = true;
     }
+    const message = {
+      username: player.playerData["name"],
+      value: guessed === true ? "" : word,
+      validity: guessed,
+    };
+    player.socket.to(this._session.sessionId).emit("round/guess", message);
+    player.socket.emit("round/guess", message);
   }
 }
 

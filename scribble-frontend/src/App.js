@@ -13,7 +13,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const newSocket = io("http://localhost:5000");
+    const newSocket = io("http://localhost:5050");
     dispatch(connectSocket(newSocket));
     dispatch(changeGameState("home"));
     return () => newSocket.close();

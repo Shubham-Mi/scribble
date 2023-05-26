@@ -1,4 +1,3 @@
-const io = require("socket.io");
 const GameSessionServices = require("../services/gameSessionServices");
 const liveGameService = require("../services/liveGameService");
 

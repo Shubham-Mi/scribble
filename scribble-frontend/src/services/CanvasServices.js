@@ -53,7 +53,7 @@ export function sendDrawCommand(
   batch.push([command, startX, startY, currentX, currentY, color]);
   if (!isRequestTimed) {
     setTimeout(() => {
-      socket.emit("canvas-draw", batch, roomId);
+      socket.emit("round/draw", batch, roomId);
       isRequestTimed = false;
       batch = [];
     }, 50);

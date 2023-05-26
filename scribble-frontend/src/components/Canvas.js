@@ -12,7 +12,7 @@ import {
 
 export default function Canvas() {
   const dispatch = useDispatch();
-  const { socket } = useSelector((state) => state.PlayerStore);
+  const { socket, role } = useSelector((state) => state.PlayerStore);
   const { roomId } = useSelector((state) => state.RoomStore);
   const { drawing, erasing, startX, startY, penColor, backgroundColor } =
     useSelector((state) => state.CanvasStore);
@@ -21,6 +21,9 @@ export default function Canvas() {
   const context = useRef(null);
 
   function userDraw(e) {
+    if (role === "guesser") {
+      return;
+    }
     const currentX = e.nativeEvent.offsetX;
     const currentY = e.nativeEvent.offsetY;
 
@@ -65,6 +68,7 @@ export default function Canvas() {
     context.current = ctx;
 
     const drawFromServer = (commands) => {
+      console.log(commands);
       commands.forEach((command) => {
         if (command[0] === 0) {
           drawOnCanvas(
@@ -98,14 +102,5 @@ export default function Canvas() {
         onMouseUp={() => stopDrawing(dispatch)}
       />
     </div>
-    //   <div
-    //   className="tool clear"
-    //   onClick={() => {
-    //     clearCanvas(context, canvasRef.current);
-    //     sendDrawCommand(2, 0, 0);
-    //   }}
-    // >
-    //   Clear
-    // </div>
   );
 }

@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Messages from "./Messages";
 import { useSelector } from "react-redux";
 
 export default function Chat() {
   const { socket } = useSelector((state) => state.PlayerStore);
-  const { roomId } = useSelector((state) => state.RoomStore);
   const [value, setValue] = useState("");
 
   const submitForm = (e) => {
     e.preventDefault();
-    socket.emit("message", value, roomId);
+    socket.emit("session/chat", value);
     setValue("");
   };
+
   return (
     <div className="chat-container">
       <Messages />
