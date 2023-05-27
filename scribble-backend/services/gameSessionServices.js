@@ -38,7 +38,18 @@ class GameSessionServies {
   startSessionRound(player) {
     if (this._session.playedRounds >= this._session.totalRounds) {
       player.socket.to(this._session.sessionId).emit("session/end");
-      player.socket.emit("session/end");
+      const scoreboard = this._session.scoreboard;
+      const allPlayers = this._session.players;
+      var finalScoreboard = {};
+      for (let i = 0; i < allPlayers.length; ++i) {
+        finalScoreboard[allPlayers[i].playerData["name"]] =
+          scoreboard[allPlayers[i].playerData["id"]].points;
+      }
+      console.log(finalScoreboard);
+      player.socket
+        .to(this._session.sessionId)
+        .emit("session/end", finalScoreboard);
+      player.socket.emit("session/end", finalScoreboard);
       return;
     }
 

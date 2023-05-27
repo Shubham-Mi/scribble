@@ -5,6 +5,7 @@ const ROUNDS = "room/settings/rounds";
 const TIME = "room/settings/time";
 const ADD_PLAYER = "room/player/add";
 const REMOVE_PLAYER = "room/player/remove";
+const UPDATE_SCORE_BOARD = "room/scoreboard";
 
 // ACTIONS
 export const joinGame = (id) => {
@@ -49,6 +50,13 @@ export const removePlayer = (player) => {
   };
 };
 
+export const updateScoreboard = (scoreboard) => {
+  return {
+    type: UPDATE_SCORE_BOARD,
+    payload: scoreboard,
+  };
+};
+
 // REDUCER
 export default function reducer(
   state = {
@@ -57,6 +65,7 @@ export default function reducer(
     rounds: 1,
     time: 60,
     players: {},
+    scoreboard: {},
   },
   action
 ) {
@@ -102,6 +111,12 @@ export default function reducer(
       return {
         ...state,
         players: allPlayers,
+      };
+    }
+    case UPDATE_SCORE_BOARD: {
+      return {
+        ...state,
+        scoreboard: action.payload,
       };
     }
     default: {

@@ -11,7 +11,6 @@ export default function Messages() {
         const newMessages = [...prevMessages, message];
         return newMessages;
       });
-      console.log(messages);
     };
 
     socket.on("round/guess", messageListener);

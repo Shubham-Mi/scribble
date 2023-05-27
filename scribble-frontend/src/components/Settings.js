@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRounds, setTime } from "../store/RoomStore";
 
 const rounds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const timers = [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180];
+const timers = [5, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180];
 
 export default function Settings() {
   const dispatch = useDispatch();

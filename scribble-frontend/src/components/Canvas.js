@@ -68,7 +68,6 @@ export default function Canvas() {
     context.current = ctx;
 
     const drawFromServer = (commands) => {
-      console.log(commands);
       commands.forEach((command) => {
         if (command[0] === 0) {
           drawOnCanvas(
