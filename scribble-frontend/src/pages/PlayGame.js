@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AllPlayers from "../components/AllPlayers";
 import Canvas from "../components/Canvas";
 import CanvasTools from "../components/CanvasTools";
@@ -7,16 +7,17 @@ import Timer from "../components/Timer";
 import Word from "../components/Word";
 import { useDispatch, useSelector } from "react-redux";
 import { changeGameState, updateScoreboard } from "../store/RoomStore";
+import Scorebaord from "../components/Scorebaord";
 
 export default function PlayGame() {
   const dispatch = useDispatch();
   const { socket } = useSelector((state) => state.PlayerStore);
+  const [displayScoreboard, setDisplayScoreboard] = useState(false);
 
   useEffect(() => {
     const roundEnd = (finalScoreboard) => {
-      console.log(finalScoreboard);
       dispatch(updateScoreboard(finalScoreboard));
-      dispatch(changeGameState("finished"));
+      setDisplayScoreboard(true);
     };
 
     socket.on("session/end", roundEnd);
@@ -34,6 +35,7 @@ export default function PlayGame() {
         <Chat />
       </div>
       <AllPlayers />
+      {displayScoreboard && <Scorebaord />}
     </div>
   );
 }

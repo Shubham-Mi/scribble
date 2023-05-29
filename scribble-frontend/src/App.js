@@ -7,7 +7,6 @@ import Connecting from "./pages/Connecting";
 import Home from "./pages/Home";
 import Lobby from "./pages/Lobby";
 import PlayGame from "./pages/PlayGame";
-import Scorebaord from "./pages/Scorebaord";
 
 function App() {
   const { gameState } = useSelector((state) => state.RoomStore);
@@ -26,7 +25,6 @@ function App() {
       {gameState === "home" && <Home />}
       {gameState === "lobby" && <Lobby />}
       {gameState === "start" && <PlayGame />}
-      {gameState === "finished" && <Scorebaord />}
     </div>
   );
 }

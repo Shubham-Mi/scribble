@@ -1,0 +1,22 @@
+.scoreboard {
+  background-color: beige;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 25rem;
+  min-height: 25rem;
+  height: fit-content;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    font-size: 2rem;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+}
