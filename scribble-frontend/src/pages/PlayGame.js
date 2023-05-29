@@ -6,7 +6,7 @@ import Chat from "../components/Chat";
 import Timer from "../components/Timer";
 import Word from "../components/Word";
 import { useDispatch, useSelector } from "react-redux";
-import { changeGameState, updateScoreboard } from "../store/RoomStore";
+import { updateScoreboard } from "../store/RoomStore";
 import Scorebaord from "../components/Scorebaord";
 
 export default function PlayGame() {
